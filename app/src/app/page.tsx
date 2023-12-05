@@ -16,9 +16,23 @@ export default function Home() {
     setUserContent(e.currentTarget.value)
   }
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // 送信処理
+    const response = await fetch("/api/send", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: userName,
+        email: userEmail,
+        content: userContent
+      })
+    })
+
+    const json = await response.json()
+    console.log(json);
     
   }
   return (
