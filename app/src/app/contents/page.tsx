@@ -23,7 +23,7 @@ const Page = () => {
     },[])
     
     return <Center w="full" flexDirection="column">
-        <Heading>お問合せ一覧</Heading>
+        <Heading py={5}>お問合せ一覧</Heading>
         <Table>
             <Thead>
                 <Tr>
