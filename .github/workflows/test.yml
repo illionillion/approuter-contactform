@@ -47,7 +47,7 @@ jobs:
           docker ps
       - name: Start Test
         run: |
-          docker compose run --rm app npm run test --detectOpenHandles
+          docker compose run --rm app npx jest --detectOpenHandles
       - name: Check DB
         run: |
           curl http://localhost:3000/api/contents
