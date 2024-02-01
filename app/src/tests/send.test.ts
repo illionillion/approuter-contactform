@@ -1,8 +1,10 @@
 import axios from "axios";
+import ip from "ip"
 
 describe("Send APIのテスト", () => {
   test("sendで送信されるか", async () => {
-    const request = await axios.post("http://127.0.0.1:3000/api/send", {
+    const address = ip.address()
+    const request = await axios.post(`http://${address}:3000/api/send`, {
         name: "John Doe",
         email: "sample@email.com",
         content: "Hello",
