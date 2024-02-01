@@ -2,7 +2,7 @@ import axios from "axios";
 
 describe("Send APIのテスト", () => {
   test("sendで送信されるか", async () => {
-    const request = await axios.post("http://localhost:3000/api/send", {
+    const request = await axios.post("http://127.0.0.1:3000/api/send", {
         name: "John Doe",
         email: "sample@email.com",
         content: "Hello",
