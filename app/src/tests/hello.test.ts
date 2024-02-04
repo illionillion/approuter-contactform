@@ -1,14 +1,17 @@
-import axios from "axios";
-import ip from "ip";
+import * as appHandler from "@/app/api/hello/route";
+import { testApiHandler } from "next-test-api-route-handler";
 describe("HelloAPIのテスト", () => {
   test("Helloが返ってくるか", async () => {
-    const address = ip.address()
-    console.log(address);
-    
-    const request = await axios({
-      url: `http://${address}:3000/api/hello`,
-      method: "GET",
-    });    
-    expect(request.data.message).toEqual("Hello!!");
+    await testApiHandler({
+      appHandler,
+      async test({ fetch }) {
+        const res = await fetch({
+          method: "GET",
+        });
+        expect(await res.json()).toStrictEqual({
+          message: "Hello!!"
+        });
+      },
+    });
   });
 });
