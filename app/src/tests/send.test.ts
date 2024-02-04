@@ -1,16 +1,16 @@
-import axios from "axios";
-import ip from "ip"
+import * as appHandler from "@/app/api/send/route";
+import { testApiHandler } from 'next-test-api-route-handler'; 
 
 describe("Send APIのテスト", () => {
   test("sendで送信されるか", async () => {
-    const address = ip.address()
-    const request = await axios.post(`http://${address}:3000/api/send`, {
-        name: "John Doe",
-        email: "sample@email.com",
-        content: "Hello",
+    await testApiHandler({
+      appHandler,
+      async test({ fetch }) {
+        const res = await fetch({ method: 'POST', body: JSON.stringify({
+          name: "John Doe", email: "sample@email.com", content: "Hello World."
+        }) });
+        expect(await res.json()).toStrictEqual({ message: "送信に成功しました。" });
+      }
     });
-
-    expect(request.status).toEqual(200);
-    expect(request.data.message).toEqual("送信に成功しました。");
   });
 });
