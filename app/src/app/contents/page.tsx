@@ -1,5 +1,3 @@
-"use client"
-import {useState, useEffect} from "react"
 import {Center, Heading, Table, Thead, Tbody, Tr, Th ,Td} from "@chakra-ui/react"
 
 export interface responceData {
@@ -9,19 +7,12 @@ export interface responceData {
     content_question: string
     postdate: string
 }
-const Page = () => {
+const Page = async () => {
 
-    const [contents, setContents] = useState<responceData[]>([])
-    const initFetch = async () => {
-        const response = await fetch("/api/contents")
-        const data = await response.json()
-        setContents(data.contents)
-    }
-
-    useEffect(() => {
-        initFetch()
-    },[])
-    
+    // useState内に格納しなくてもこれでgetServerSidePropsみたいなことができる。
+    const response = await fetch("http:localhost:3000/api/contents")
+    const { contents } = await response.json() as {contents: responceData[]}
+ 
     return <Center w="full" flexDirection="column">
         <Heading py={5}>お問合せ一覧</Heading>
         <Table>
