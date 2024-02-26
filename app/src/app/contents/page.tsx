@@ -1,3 +1,4 @@
+import { TableBody } from "@/components/TableBody"
 import {Center, Heading, Table, Thead, Tbody, Tr, Th ,Td} from "@chakra-ui/react"
 
 export interface responceData {
@@ -9,8 +10,9 @@ export interface responceData {
 }
 const Page = async () => {
 
+    const rand = (max: number) => Math.floor(Math.random() * max)
     // useState内に格納しなくてもこれでgetServerSidePropsみたいなことができる。
-    const response = await fetch("http:localhost:3000/api/contents")
+    const response = await fetch("http:localhost:3000/api/contents?id=" + rand(100))
     const { contents } = await response.json() as {contents: responceData[]}
  
     return <Center w="full" flexDirection="column">
@@ -26,15 +28,7 @@ const Page = async () => {
                 </Tr>
             </Thead>
             <Tbody>
-                {contents.map((item, index) => (
-                    <Tr key={index}>
-                        <Td>{item.id}</Td>
-                        <Td>{item.name}</Td>
-                        <Td>{item.email}</Td>
-                        <Td>{item.content_question}</Td>
-                        <Td>{item.postdate}</Td>
-                    </Tr>
-                ))}
+                <TableBody contents={contents}/>
             </Tbody>
         </Table>
     </Center>

@@ -1,8 +1,11 @@
 "use client"
+import { ClientToServerEvents, ServerToClientEvents } from "@/socket.io/models";
 import { Box, Button, Center, FormLabel, Heading, Input, Textarea } from "@chakra-ui/react"
 import { ChangeEvent, FormEvent, useState } from "react"
+import { Socket, io } from "socket.io-client";
 
 export default function Home() {
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3001");
   const [userName, setUserName] = useState<string>("")
   const userNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserName(e.currentTarget.value)
@@ -32,37 +35,38 @@ export default function Home() {
           content: userContent
         })
       })
-  
+
       const json = await response.json()
       console.log(json.message);
-      
+
       if (response.status === 200) {
         setUserName("")
         setUserEmail("")
         setUserContent("")
+        socket.emit("onSubmit")
       }
     } catch (error) {
       console.log("送信失敗", error);
     }
 
-    
+
   }
   return (
     <Center w="full" flexDir="column">
       <Heading py={5}>お問合せフォーム</Heading>
-      <form onSubmit={onSubmit} style={{width: "100%"}}>
+      <form onSubmit={onSubmit} style={{ width: "100%" }}>
         <Center gap={3} flexDir="column">
           <Box w="40%" minW="250px">
             <FormLabel htmlFor='name'>名前</FormLabel>
-            <Input id='name' placeholder='名前' value={userName} onChange={userNameChange}/>
+            <Input id='name' placeholder='名前' value={userName} onChange={userNameChange} />
           </Box>
           <Box w="40%" minW="250px">
             <FormLabel htmlFor='email'>メールアドレス</FormLabel>
-            <Input id='email' placeholder='メールアドレス' value={userEmail} onChange={userEmailChange}/>
+            <Input id='email' placeholder='メールアドレス' value={userEmail} onChange={userEmailChange} />
           </Box>
           <Box w="40%" minW="250px">
             <FormLabel htmlFor='content'>内容</FormLabel>
-            <Textarea id='content' placeholder='内容' value={userContent} onChange={userContentChange}/>
+            <Textarea id='content' placeholder='内容' value={userContent} onChange={userContentChange} />
           </Box>
           <Box w="40%" minW="250px" textAlign="center">
             <Button type="submit">送信</Button>
