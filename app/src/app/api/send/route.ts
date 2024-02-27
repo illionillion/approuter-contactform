@@ -11,8 +11,10 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  let connection;
+
   try {
-    const connection = await mysql_connection();
+    connection = await mysql_connection();
 
     const query =
       "INSERT INTO contact_table (name, email, content_question) VALUES (?, ?, ?)";
@@ -27,5 +29,7 @@ export async function POST(request: NextRequest) {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
+  } finally {
+    if(connection) connection.end();
   }
 }
