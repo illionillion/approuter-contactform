@@ -1,5 +1,5 @@
 import { TableBody } from "@/components/TableBody"
-import {Center, Heading, Table, Thead, Tbody, Tr, Th ,Td} from "@chakra-ui/react"
+import { Center, Heading, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react"
 
 export interface responceData {
     id: number
@@ -10,11 +10,12 @@ export interface responceData {
 }
 const Page = async () => {
 
-    const rand = (max: number) => Math.floor(Math.random() * max)
     // useState内に格納しなくてもこれでgetServerSidePropsみたいなことができる。
-    const response = await fetch("http:localhost:3000/api/contents?id=" + rand(100))
-    const { contents } = await response.json() as {contents: responceData[]}
- 
+    const response = await fetch("http:localhost:3000/api/contents", {
+        cache: "no-store", // キャッシュせずに最新のデータをとってくる
+    })
+    const { contents } = await response.json() as { contents: responceData[] }
+
     return <Center w="full" flexDirection="column">
         <Heading py={5}>お問合せ一覧</Heading>
         <Table>
@@ -28,7 +29,7 @@ const Page = async () => {
                 </Tr>
             </Thead>
             <Tbody>
-                <TableBody contents={contents}/>
+                <TableBody contents={contents} />
             </Tbody>
         </Table>
     </Center>
