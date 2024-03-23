@@ -1,11 +1,11 @@
 "use client"
-import { ClientToServerEvents, ServerToClientEvents } from "@/socket.io/models";
 import { Box, Button, Center, FormLabel, Heading, Input, Textarea } from "@chakra-ui/react"
 import { ChangeEvent, FormEvent, useState } from "react"
-import { Socket, io } from "socket.io-client";
+import { io } from "socket.io-client";
 
 export default function Home() {
-  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3001");
+  const socket = io({ autoConnect: false });
+
   const [userName, setUserName] = useState<string>("")
   const userNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserName(e.currentTarget.value)
@@ -43,7 +43,14 @@ export default function Home() {
         setUserName("")
         setUserEmail("")
         setUserContent("")
-        socket.emit("onSubmit")
+        await fetch('/api/socketio', { method: 'POST' });
+        // 既に接続済だったら何もしない
+        if (socket.connected) {
+          return;
+        }
+        // socket.ioサーバに接続
+        socket.connect();
+        socket.emit('onSubmit'); // 送信
       }
     } catch (error) {
       console.log("送信失敗", error);

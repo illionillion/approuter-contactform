@@ -1,9 +1,8 @@
 "use client"
 import { responceData } from "@/app/contents/page";
-import { ClientToServerEvents, ServerToClientEvents } from "@/socket.io/models";
 import { Td, Tr } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
-import { Socket, io } from "socket.io-client";
+import { io } from "socket.io-client";
 
 interface TBodyProps {
     contents: responceData[]
@@ -12,10 +11,8 @@ interface TBodyProps {
 export const TableBody: FC<TBodyProps> = ({ contents }) => {
 
     const [tableContents, setTableContent] = useState<TBodyProps["contents"]>(contents)
-    const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-        // サーバーのURLを指定
-        'http://localhost:3001'
-    );
+    const socket = io({ autoConnect: false });
+
 
     const fetching = async () => {
         const req = await fetch('/api/contents');
@@ -24,13 +21,26 @@ export const TableBody: FC<TBodyProps> = ({ contents }) => {
     };
 
     useEffect(() => {
-        (() => {
-            socket.on('sync', () => {
-                console.log('sync');
+        fetch('/api/socketio', { method: 'POST' })
+            .then(() => {
+                // 既に接続済だったら何もしない
+                if (socket.connected) {
+                    return;
+                }
+                // socket.ioサーバに接続
+                socket.connect();
+                socket.on('sync', () => {
+                    console.log('sync');
+                    fetching();
+                });
                 fetching();
             });
-            fetching();
-        })();
+
+        return () => {
+            // 登録したイベントは全てクリーンアップ
+            socket.off('connect');
+            socket.off('msg');
+        };
     }, []);
 
 
