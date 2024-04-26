@@ -6,7 +6,7 @@ AppRouterを使用してお問合せフォームを作成するサンプル
 
 - Next.js
 - TypeScript
-- Chakra UI
+- Yamada UI
 - Socket.io
 - MySQL
 - Docker
