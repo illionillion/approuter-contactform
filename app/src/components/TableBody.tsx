@@ -1,6 +1,6 @@
 "use client"
 import { responceData } from "@/app/contents/page";
-import { Td, Tr } from "@chakra-ui/react";
+import { Td, Tr } from "@yamada-ui/react";
 import { FC, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 

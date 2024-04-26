@@ -1,5 +1,5 @@
 "use client"
-import { Box, Button, Center, FormLabel, Heading, Input, Textarea } from "@chakra-ui/react"
+import { Box, Button, Center, Label as FormLabel, Heading, Input, Textarea } from "@yamada-ui/react"
 import { ChangeEvent, FormEvent, useState } from "react"
 import { io } from "socket.io-client";
 

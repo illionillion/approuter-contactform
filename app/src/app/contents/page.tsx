@@ -1,5 +1,5 @@
 import { TableBody } from "@/components/TableBody"
-import { Center, Heading, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react"
+import { Center, Heading, NativeTable as Table, Thead, Tbody, Tr, Th } from "@yamada-ui/react"
 
 export interface responceData {
     id: number
