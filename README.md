@@ -25,7 +25,7 @@ TZ=Asia/Tokyo
 ```
 
 ```sh
-docker compose run --rm app nom i
+docker compose run --rm app npm i
 docker compose up -d
 ```
 
